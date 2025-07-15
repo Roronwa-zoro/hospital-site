@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>جدول المناوبات الشهري</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+    <div class="container py-5 text-center">
+        <h1 class="mb-4">📅 جدول المناوبات الشهري</h1>
+
+        {% if schedule and schedule.image %}
+            <img src="{{ schedule.image.url }}" alt="صورة جدول المناوبات" class="img-fluid rounded shadow mb-4" style="max-height: 600px;">
+        {% else %}
+            <p class="text-muted fs-5">🚫 لم يتم رفعه بعد.</p>
+        {% endif %}
+
+        {% if user_is_m %}
+            <form method="post" enctype="multipart/form-data" class="mb-3">
+                {% csrf_token %}
+                <div class="mb-3">
+                    {{ form.image.label_tag }}
+                    {{ form.image }}
+                </div>
+                <button type="submit" class="btn btn-success">💾 حفظ / تعديل الجدول</button>
+            </form>
+
+            {% if schedule %}
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="delete" value="true">
+                    <button type="submit" class="btn btn-danger">🗑 حذف الجدول</button>
+                </form>
+            {% endif %}
+        {% endif %}
+    </div>
+
+</body>
+</html>
